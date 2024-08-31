@@ -4,6 +4,7 @@ Requirements:
 - Google Chrome or Chromium.
 - Node.js (recommended v22.6.0 or newer)
 - npm (recommended 10.8.2 or newer)
+- wireshark
 Outline:
 - What’s WebRTC and when to use it?,
 - Theoretical introduction to the WebRTC protocol stack,
