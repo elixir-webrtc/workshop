@@ -1,55 +1,27 @@
-let pc;
-
-const button = document.getElementById('button');
 const localPlayer = document.getElementById('localPlayer');
 const remotePlayer = document.getElementById('remotePlayer');
+(async function () {
+  // obtain access to the user's audio and video
 
-const signaling = new BroadcastChannel('webrtc');
-signaling.onmessage = e => {
-  switch (e.data.type) {
-    case 'offer':
-      handleOffer(e.data);
-      break;
-    case 'answer':
-      handleAnswer(e.data);
-      break;
-    case 'candidate':
-      handleCandidate(e.data);
-      break;
-  }
-}
+  // pin the stream to the localPlayer
 
-button.onclick = start;
+  // create two peer connections
+  // use https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/RTCPeerConnection
 
-async function start() {
-  // 1. creat a new peer connection and setup onicecandidate and ontrack events
-  // 2. obtain access to the microphone and camera
-  // 3. add tracks to the peer connection
-  // 4. create offer
-  // 5. set it as local description
-  // 6. send it to the other
-};
+  // add tracks to the pc1
+  // use https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/addTrack
 
-function onicecandidate(event) {
-  // 1. send received candidate to the other side
-}
+  // create and set offer
+  // use https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/createOffer
+  // use https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/setLocalDescription
 
-function ontrack(event) {
-  // 1. pin remote track to the remote HTML video element
-}
+  // set offer on the other side
+  // use https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/setRemoteDescription
 
-async function handleOffer(offer) {
-  // 1. create a new peer connection and setup onincecandidate and ontrack callbacks
-  // 2. set remote description
-  // 3. generate answer
-  // 4. set it as local description
-  // 5. send it to the other side
-}
+  // create and set answer
+  // use https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/createAnswer
+  // use https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/setLocalDescription
 
-async function handleAnswer(answer) {
-  // set remote description
-}
-
-async function handleCandidate(candidate) {
-  // add ice candidate to the peer connection
-}
+  // set answer on the other side
+  // use https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/setRemoteDescription
+})();

@@ -1,89 +1,40 @@
-let pc;
-
-const button = document.getElementById('button');
 const localPlayer = document.getElementById('localPlayer');
 const remotePlayer = document.getElementById('remotePlayer');
-
-const signaling = new BroadcastChannel('webrtc');
-signaling.onmessage = e => {
-  switch (e.data.type) {
-    case 'offer':
-      handleOffer(e.data);
-      break;
-    case 'answer':
-      handleAnswer(e.data);
-      break;
-    case 'candidate':
-      handleCandidate(e.data);
-      break;
-  }
-}
-
-button.onclick = start;
-
-function init() {
-  localPlayer.srcObject = null;
-  remotePlayer.srcObject = null;
-  pc = new RTCPeerConnection();
-  pc.onicecandidate = onicecandidate;
-  pc.ontrack = ontrack;
-}
-
-async function start() {
-  init();
+(async function () {
+  // obtain access to the user's audio and video
   const stream = await navigator.mediaDevices.getUserMedia({
     audio: true,
     video: true
   });
+
+  // pin the stream to the localPlayer
   localPlayer.srcObject = stream;
-  stream.getTracks().forEach(track => pc.addTrack(track, stream));
-  const offer = await pc.createOffer();
-  await pc.setLocalDescription(offer);
-  signaling.postMessage({
-    type: 'offer',
-    sdp: offer.sdp
-  })
-};
 
-function onicecandidate(event) {
-  const message = {
-    type: 'candidate',
-    candidate: null,
-  };
+  // create two peer connections
+  const pc1 = new RTCPeerConnection();
+  const pc2 = new RTCPeerConnection();
 
-  if (event.candidate) {
-    message.candidate = event.candidate.candidate;
-    message.sdpMid = event.candidate.sdpMid;
-    message.sdpMLineIndex = event.candidate.sdpMlineIndex;
-  }
+  // when pc1 or pc2 receives a new ICE candidate, add it on the other side
+  pc1.onicecandidate = async ev => await pc2.addIceCandidate(ev.candidate);
+  pc2.onicecandidate = async ev => await pc1.addIceCandidate(ev.candidate);
 
-  signaling.postMessage(message);
-}
+  // when pc2 receives a new track, pin it to the player
+  pc2.ontrack = ev => remotePlayer.srcObject = ev.streams[0];
 
-function ontrack(event) {
-  remotePlayer.srcObject = event.streams[0];
-}
+  // add tracks to the pc1
+  stream.getTracks().forEach(track => pc1.addTrack(track, stream));
 
-async function handleOffer(offer) {
-  init();
-  await pc.setRemoteDescription(offer);
-  const answer = await pc.createAnswer();
-  await pc.setLocalDescription(answer);
-  signaling.postMessage({
-    type: 'answer',
-    sdp: answer.sdp
-  });
-}
+  // create and set offer
+  const offer = await pc1.createOffer();
+  await pc1.setLocalDescription(offer);
 
-async function handleAnswer(answer) {
-  await pc.setRemoteDescription(answer);
-}
+  // set offer on the other side
+  await pc2.setRemoteDescription(offer);
 
-async function handleCandidate(candidate) {
-  if (!candidate.candidate) {
-    // null indicates there won't be any further candidates and allows ICE to conclude - move from connected to completed state
-    await pc.addIceCandidate(null);
-  } else {
-    await pc.addIceCandidate(candidate);
-  }
-}
+  // create and set answer
+  const answer = await pc2.createAnswer();
+  await pc2.setLocalDescription(answer);
+
+  // set answer on the other side
+  await pc1.setRemoteDescription(answer);
+})();

@@ -5,6 +5,7 @@ Requirements:
 - Node.js (recommended v22.6.0 or newer)
 - npm (recommended 10.8.2 or newer)
 - wireshark
+
 Outline:
 - What’s WebRTC and when to use it?,
 - Theoretical introduction to the WebRTC protocol stack,
@@ -14,3 +15,12 @@ Outline:
 - Mastering Transceivers
 - Why do we need media servers?
 - Building a simple video-conferencing application with Fishjam Cloud. 
+
+Things you will learn:
+* mediaDevices API
+* PeerConnection API
+* code snippets in a web browser
+* ICE internals
+* W3C document overview and comparision with CSS
+* chrome://webrtc-internals
+* dumping chrome://webrtc-internals
