@@ -7,6 +7,7 @@ Tasks:
 Questions:
 1. Why the remotePlayer is smaller at the beginning?
 1. When is ontrack event emitted?
+1. When does media start flowing?
 
 What's next:
 1. How to reject incoming track?
