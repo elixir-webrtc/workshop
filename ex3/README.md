@@ -1,4 +1,4 @@
-# Bidirectinal connection between two web browser tabs
+# Unidirectional connection between two web browser tabs
 
 Tasks:
 1. Setup unidirectional audio/video connection between two tabs.

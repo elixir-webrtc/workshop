@@ -35,7 +35,7 @@ async function start() {
   // 3. add tracks to the peer connection
   // 4. create offer
   // 5. set it as local description
-  // 6. send it to the other
+  // 6. send it to the other side
 };
 
 function onicecandidate(event) {
@@ -49,7 +49,7 @@ function ontrack(event) {
 async function handleOffer(offer) {
   // 1. create a new peer connection and setup onincecandidate and ontrack callbacks
   // 2. set remote description
-  // 3. generate answer
+  // 3. generate an answer
   // 4. set it as local description
   // 5. send it to the other side
 }
