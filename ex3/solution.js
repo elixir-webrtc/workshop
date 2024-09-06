@@ -39,25 +39,11 @@ async function start() {
   stream.getTracks().forEach(track => pc.addTrack(track, stream));
   const offer = await pc.createOffer();
   await pc.setLocalDescription(offer);
-  signaling.postMessage({
-    type: 'offer',
-    sdp: offer.sdp
-  })
+  signaling.postMessage(offerToMsg(offer));
 };
 
 function onicecandidate(event) {
-  const message = {
-    type: 'candidate',
-    candidate: null,
-  };
-
-  if (event.candidate) {
-    message.candidate = event.candidate.candidate;
-    message.sdpMid = event.candidate.sdpMid;
-    message.sdpMLineIndex = event.candidate.sdpMlineIndex;
-  }
-
-  signaling.postMessage(message);
+  signaling.postMessage(candidateEventToMsg(event));
 }
 
 function ontrack(event) {
@@ -69,10 +55,7 @@ async function handleOffer(offer) {
   await pc.setRemoteDescription(offer);
   const answer = await pc.createAnswer();
   await pc.setLocalDescription(answer);
-  signaling.postMessage({
-    type: 'answer',
-    sdp: answer.sdp
-  });
+  signaling.postMessage(answerToMsg(answer));
 }
 
 async function handleAnswer(answer) {
@@ -86,4 +69,33 @@ async function handleCandidate(candidate) {
   } else {
     await pc.addIceCandidate(candidate);
   }
+}
+
+function offerToMsg(offer) {
+  return {
+    type: 'offer',
+    sdp: offer.sdp
+  }
+}
+
+function answerToMsg(answer) {
+  return {
+    type: 'answer',
+    sdp: answer.sdp
+  }
+}
+
+function candidateEventToMsg(event) {
+  const message = {
+    type: 'candidate',
+    candidate: null,
+  };
+
+  if (event.candidate) {
+    message.candidate = event.candidate.candidate;
+    message.sdpMid = event.candidate.sdpMid;
+    message.sdpMLineIndex = event.candidate.sdpMlineIndex;
+  }
+
+  return message;
 }
