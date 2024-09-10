@@ -8,7 +8,7 @@ const remotePlayer = document.getElementById('remotePlayer');
   // create two peer connections
   // use https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/RTCPeerConnection
 
-  // add tracks to the pc1
+  // add tracks to pc1
   // use https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/addTrack
 
   // create and set offer

@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Unidirectional connection between two web browser tabs</title>
+  <title>Bidirectional connection between two web browser tabs</title>
 </head>
 
 <body>
@@ -11,7 +11,7 @@
     <div style="display: flex; gap: 10px;">
       <div style="display: flex; flex-grow: 1; flex-direction: column;">
         <label for="localPlayer" style="font-size: 20px;">Local peer</label>
-        <video id="localPlayer" autoplay controls muted></video>
+        <video id="localPlayer" autoplay controls></video>
       </div>
       <div style="display: flex; flex-grow: 1; flex-direction: column;">
         <label for="remotePlayer" style="font-size: 20px;">Remote peer</label>
@@ -22,7 +22,7 @@
       <button id="button" style="padding: 10px;">Start</button>
     </div>
   </div>
-  <script src="script.js"></script>
+  <script src="solution.js"></script>
 </body>
 
 </html>

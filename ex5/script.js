@@ -19,49 +19,62 @@ signaling.onmessage = e => {
   }
 }
 
-// Hint: use https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage 
-// to send message via BroadcastChannel.
-// Hint: use offerToMsg, answerToMsg and candidateEventToMsg
-// Example: signaling.postMessage(offerToMsg(offer));
-
 button.onclick = start;
 
+function init() {
+  localPlayer.srcObject = null;
+  remotePlayer.srcObject = null;
+  pc = new RTCPeerConnection();
+  pc.onicecandidate = onicecandidate;
+  pc.ontrack = ontrack;
+}
+
 async function start() {
-  // 1. creat a new peer connection and setup onicecandidate and ontrack events
-  // 2. obtain access to the microphone and camera
-  // 3. add tracks to the peer connection
-  // 4. create offer
-  // 5. set it as local description
-  // 6. send it to the other side
-  // Hint: use offerToMsg
+  init();
+  const stream = await navigator.mediaDevices.getUserMedia({
+    audio: true,
+    video: true
+  });
+  localPlayer.srcObject = stream;
+  stream.getTracks().forEach(track => pc.addTrack(track, stream));
+  const offer = await pc.createOffer();
+  await pc.setLocalDescription(offer);
+  signaling.postMessage(offerToMsg(offer));
 };
 
 function onicecandidate(event) {
-  // 1. send received candidate to the other side
-  // Hint: use candidateEventToMsg
+  signaling.postMessage(candidateEventToMsg(event));
 }
 
 function ontrack(event) {
-  // 1. pin remote track to the remote HTML video element
+  remotePlayer.srcObject = event.streams[0];
 }
 
 async function handleOffer(offer) {
-  // 1. create a new peer connection and setup onincecandidate and ontrack callbacks
-  // 2. set remote description
-  // 3. generate an answer
-  // 4. set it as local description
-  // 5. send it to the other side
-  // Hint: use answerToMsg
+  init();
+  // obtain access to audio and video, 
+  // add tracks to the peer connection,
+  // pin stream to local player
+  // ...
+
+
+  await pc.setRemoteDescription(offer);
+  const answer = await pc.createAnswer();
+  await pc.setLocalDescription(answer);
+  signaling.postMessage(answerToMsg(answer));
 }
 
 async function handleAnswer(answer) {
-  // 1. set remote description
+  await pc.setRemoteDescription(answer);
 }
 
 async function handleCandidate(candidate) {
-  // 1. add ice candidate to the peer connection
-  // Hint: if candidate.candidate is null, pass null to the addIceCandidate function.
-  // This indicates there won't be any further candidates and allows ICE to conclude - move from connected to completed state 
+  if (!candidate.candidate) {
+    // null indicates there won't be any further candidates and allows ICE to conclude - move from connected to completed state
+    await pc.addIceCandidate(null);
+  } else {
+    await pc.addIceCandidate(candidate);
+  }
 }
 
 function offerToMsg(offer) {

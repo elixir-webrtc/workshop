@@ -21,7 +21,7 @@ const remotePlayer = document.getElementById('remotePlayer');
   // when pc2 receives a new track, pin it to the player
   pc2.ontrack = ev => remotePlayer.srcObject = ev.streams[0];
 
-  // add tracks to the pc1
+  // add tracks to pc1
   stream.getTracks().forEach(track => pc1.addTrack(track, stream));
 
   // create and set offer

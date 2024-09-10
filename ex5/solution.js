@@ -53,6 +53,12 @@ function ontrack(event) {
 async function handleOffer(offer) {
   init();
   await pc.setRemoteDescription(offer);
+  const stream = await navigator.mediaDevices.getUserMedia({
+    audio: true,
+    video: true
+  });
+  localPlayer.srcObject = stream;
+  stream.getTracks().forEach(track => pc.addTrack(track, stream));
   const answer = await pc.createAnswer();
   await pc.setLocalDescription(answer);
   signaling.postMessage(answerToMsg(answer));
