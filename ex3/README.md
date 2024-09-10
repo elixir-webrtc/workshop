@@ -10,19 +10,19 @@ I 12:15:38.309 000000 90 70 5f f3 cd 65 51 fa 4e 5a # RTP_DUMP
 
 ## Instructions:
 
-1. Run chrome/chromium with logs enabled. 
+1. Run chrome/chromium with logs enabled
 
     ```
     chromium --enable-logging=stderr -v=3 --force-fieldtrials=WebRTC-Debugging-RtpDump/Enabled/ > log.txt 2>&1
     ```
 
-1. Filter RTP packets
+1. Filter the RTP packets
 
     ```
     grep RTP_DUMP log.txt > rtp-dump.txt
     ```
 
-1. Convert RTP packets into pcap file.
+1. Convert the RTP packets into a PCAP file
 
     ```
     text2pcap -D -u 5443,62132 -t %H:%M:%S.%f rtp-dump.txt rtp-dump.pcap
@@ -32,7 +32,7 @@ I 12:15:38.309 000000 90 70 5f f3 cd 65 51 fa 4e 5a # RTP_DUMP
     * `-u <srcport>,<destport>` - include dummy UDP headers before each packet
     * `-t <timefmt>` - treats the text before the packet as date/time code  
 
-1. Open pcap with Wireshark
+1. Open the PCAP file with Wireshark
 
     ```
     wireshark rtp-dump.pcap

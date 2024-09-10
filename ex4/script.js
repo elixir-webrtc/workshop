@@ -27,7 +27,7 @@ signaling.onmessage = e => {
 button.onclick = start;
 
 async function start() {
-  // 1. creat a new peer connection and setup onicecandidate and ontrack events
+  // 1. create a new peer connection and setup onicecandidate and ontrack events
   // 2. obtain access to the microphone and camera
   // 3. add tracks to the peer connection
   // 4. create offer
