@@ -9,22 +9,21 @@
 <body>
   <div style="max-width: 1280px; gap: 20px;">
     <label for="roomName">Room name: </label>
-    <input type="text" id="roomName" value="my-room" /><br/>
+    <input type="text" id="roomName" value="my-room" />
 
     <label for="username">Username: </label>
     <input type="text" id="username" />
 
     <button id="button">Join room</button>
+    <br/><br/>
 
-    <div style="display: flex; gap: 10px;" id="videoPlayerContainer">
-      <div style="display: flex; flex-grow: 1; flex-direction: column;">
-        <label for="localPlayer" style="font-size: 20px;">Local peer</label>
-        <video id="localPlayer" autoplay controls></video>
-      </div>
-      
-      <label for="remotePlayers">Remote peers</label>
-      <div style="display: flex; flex-grow: 1; flex-direction: column;" id="remotePlayers">
-      </div>
+    <div style="display: flex; flex-grow: 1; flex-direction: column;">
+      <label for="localPlayer">Local peer</label>
+      <video id="localPlayer" autoplay controls></video>
+    </div>
+
+    <label for="remotePlayers">Remote peers</label>
+    <div style="display: flex; flex-grow: 1; flex-direction: column;" id="remotePlayers">
     </div>
   </div>
 
